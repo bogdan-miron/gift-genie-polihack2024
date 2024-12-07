@@ -3,18 +3,18 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import GiftGrid from './gift-grid';
+import TextGrid from './text-grid';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from './progress-bar';
 import { useGiftFinderStore } from '@/lib/store';
-import TextGrid from './text-grid';
 import { generateNextQuestion } from '@/lib/ai-service';
 
 export function GiftFinderForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
-  const { answers, setAnswers } = useGiftFinderStore();
-  const { questions, setQuestions } = useGiftFinderStore();
+  const { answers, setAnswers, questions, setQuestions } = useGiftFinderStore();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     const step = parseInt(searchParams.get('step') || '1', 10);
@@ -30,19 +30,22 @@ export function GiftFinderForm() {
   };
 
   const goToNextQuestion = async () => {
-
-    if(currentStep == 9){
-      //ADAUG LOGICA FINALA
-       router.push('/results');
-       return;
-    }
-    if (currentStep < 6) {
+    if (currentStep < questions.length) {
       router.push(`?step=${currentStep + 1}`);
     } else {
-        await generateNextQuestion(questions,setQuestions)
-     
+      setIsGenerating(true);
+      try {
+        if (currentStep < 10) {
+          await generateNextQuestion(questions, answers, setQuestions);
+          router.push(`?step=${currentStep + 1}`);
+        } else {
+          router.push('/results');
+        }
+      } catch (error) {
+        console.error('Failed to generate new question:', error);
+      }
+      setIsGenerating(false);
     }
-
   };
 
   const goToPreviousQuestion = () => {
@@ -52,6 +55,10 @@ export function GiftFinderForm() {
   };
 
   const currentQuestion = questions[currentStep - 1];
+
+  if (!currentQuestion) {
+    return null;
+  }
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -77,8 +84,11 @@ export function GiftFinderForm() {
         <Button onClick={goToPreviousQuestion} disabled={currentStep === 1}>
           Previous
         </Button>
-        <Button onClick={goToNextQuestion}>
-          {currentStep === questions.length ? 'Submit' : 'Next'}
+        <Button
+          onClick={goToNextQuestion}
+          disabled={isGenerating || !answers[currentQuestion.id]?.length}
+        >
+          {isGenerating ? 'Generating...' : 'Next'}
         </Button>
       </div>
     </div>
