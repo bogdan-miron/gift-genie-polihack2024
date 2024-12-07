@@ -4,130 +4,72 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-interface Occasion {
+export interface Choice {
   id: string;
   title: string;
   image: string;
 }
 
 interface GiftGridProps {
+  question: string;
+  choices: Choice[];
+  onSelectionChange: (selectedChoices: string[]) => void;
   multiSelect?: boolean;
-  onSelectionChange?: (selectedOccasions: string[]) => void;
+  initialSelection?: string[];
 }
 
-const occasions: Occasion[] = [
-  {
-    id: 'christmas',
-    title: 'Christmas',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'birthday',
-    title: 'Birthday',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'valentines',
-    title: "Valentine's Day",
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'anniversary',
-    title: 'Anniversary',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'wedding',
-    title: 'Wedding',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'mothers-day',
-    title: "Mother's Day",
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'fathers-day',
-    title: "Father's Day",
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'baby-shower',
-    title: 'Baby Shower',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'birth',
-    title: 'Birth',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'graduation',
-    title: 'Graduation',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'housewarming',
-    title: 'Housewarming',
-    image: '/Christmas WebP Resize.jpg',
-  },
-  {
-    id: 'other',
-    title: 'Other',
-    image: '/Christmas WebP Resize.jpg',
-  },
-];
-
 export default function GiftGrid({
-  multiSelect = false,
+  question,
+  choices,
   onSelectionChange,
+  multiSelect = false,
+  initialSelection = [],
 }: GiftGridProps) {
-  const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
+  const [selectedChoices, setSelectedChoices] =
+    useState<string[]>(initialSelection);
 
   const handleSelection = (id: string) => {
     let newSelection: string[];
 
     if (multiSelect) {
-      newSelection = selectedOccasions.includes(id)
-        ? selectedOccasions.filter((item) => item !== id)
-        : [...selectedOccasions, id];
+      newSelection = selectedChoices.includes(id)
+        ? selectedChoices.filter((item) => item !== id)
+        : [...selectedChoices, id];
     } else {
       newSelection = [id];
     }
 
-    setSelectedOccasions(newSelection);
-    onSelectionChange?.(newSelection);
+    setSelectedChoices(newSelection);
+    onSelectionChange(newSelection);
   };
 
   return (
     <div className='container mx-auto px-4 py-8'>
-      <h1 className='text-3xl font-bold text-center mb-8'>
-        What is the occasion?
-      </h1>
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        {occasions.map((occasion) => (
+      <h1 className='text-3xl font-bold text-center mb-8'>{question}</h1>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
+        {choices.map((choice) => (
           <div
-            key={occasion.id}
+            key={choice.id}
             className={cn(
               'group relative aspect-square overflow-hidden rounded-lg cursor-pointer p-[3px] bg-transparent',
               'transition-all duration-300 ',
-              selectedOccasions.includes(occasion.id) && [
+              selectedChoices.includes(choice.id) && [
                 'bg-gradient-to-r from-primary-300 via-primary-500 to-primary-600',
                 'hover:shadow-2xl hover:shadow-primary-500/40',
                 'shadow-xl shadow-primary-500/30',
               ]
             )}
-            onClick={() => handleSelection(occasion.id)}
+            onClick={() => handleSelection(choice.id)}
           >
             <div
               className={cn(
                 'relative h-full w-full overflow-hidden rounded-lg bg-background',
-                selectedOccasions.includes(occasion.id) && 'bg-background'
+                selectedChoices.includes(choice.id) && 'bg-background'
               )}
             >
               <Image
-                src={occasion.image}
-                alt={occasion.title}
+                src={choice.image}
+                alt={choice.title}
                 className='object-cover transition-transform duration-500 group-hover:scale-110 brightness-[0.8]'
                 fill
                 sizes='(min-width: 1024px) 25vw, (min-width: 768px) 33vw, (min-width: 640px) 50vw, 100vw'
@@ -138,7 +80,7 @@ export default function GiftGrid({
                 className='text-white font-semibold text-base sm:text-md md:text-lg lg:text-lg 
                            max-w-[80%] text-center break-words'
               >
-                {occasion.title}
+                {choice.title}
               </h2>
             </div>
           </div>
