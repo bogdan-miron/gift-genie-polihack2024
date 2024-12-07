@@ -1,47 +1,15 @@
-"use client";
-import React, { useState } from "react";
+'use client';
 
-interface Message {
-    sender: "user" | "bot";
-    text: string;
+import GiftGrid from '@/components/gift-grid';
+import { Button } from '@/components/ui/button';
+
+export default function ChatInterface() {
+  return (
+    <div className='flex flex-col h-screen justify-center items-center'>
+      <div className='w-[50%]'>
+        <GiftGrid multiSelect />
+      </div>
+      <Button className='mt-8 bg-primary-500 text-white'>Click me</Button>
+    </div>
+  );
 }
-
-const ChatBot: React.FC = () => {
-    const [messages, setMessages] = useState<Message[]>([]);
-    const [input, setInput] = useState<string>("");
-
-    const handleSend = () => {
-        if (!input.trim()) return;
-
-        const newMessage: Message = { sender: "user", text: input };
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-
-        setTimeout(() => {
-            const botResponse: Message = { sender: "bot", text: "Hello! How can I assist you?" };
-            setMessages((prevMessages) => [...prevMessages, botResponse]);
-        }, 1000);
-
-        setInput("");
-    };
-
-    return (
-        <div>
-            <div>
-                {messages.map((msg, index) => (
-                    <div key={index}>{msg.text}</div>
-                ))}
-            </div>
-            <div>
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type a message"
-                />
-                <button onClick={handleSend}>Send</button>
-            </div>
-        </div>
-    );
-};
-
-export default ChatBot;
