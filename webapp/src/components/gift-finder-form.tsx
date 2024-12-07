@@ -2,16 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import GiftGrid, { Choice } from './gift-grid';
+import GiftGrid from './gift-grid';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from './progress-bar';
 import { useGiftFinderStore } from '@/lib/store';
-
-export interface Question {
-  id: string;
-  question: string;
-  choices: Choice[];
-}
+import { Question } from '@/lib/store';
+import TextGrid from './text-grid';
 
 export function GiftFinderForm({ questions }: { questions: Question[] }) {
   const router = useRouter();
@@ -51,12 +47,23 @@ export function GiftFinderForm({ questions }: { questions: Question[] }) {
   return (
     <div className='container mx-auto px-4 py-8'>
       <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
-      <GiftGrid
-        question={currentQuestion.question}
-        choices={currentQuestion.choices}
-        onSelectionChange={handleSelectionChange}
-        initialSelection={answers[currentQuestion.id] || []}
-      />
+      {currentQuestion.type === 'image' ? (
+        <GiftGrid
+          question={currentQuestion.question}
+          choices={currentQuestion.choices}
+          onSelectionChange={handleSelectionChange}
+          multiSelect={currentQuestion.multiSelect}
+          initialSelection={answers[currentQuestion.id] || []}
+        />
+      ) : (
+        <TextGrid
+          question={currentQuestion.question}
+          choices={currentQuestion.choices}
+          onSelectionChange={handleSelectionChange}
+          multiSelect={currentQuestion.multiSelect}
+          initialSelection={answers[currentQuestion.id] || []}
+        />
+      )}
       <div className='flex justify-between mt-8'>
         <Button onClick={goToPreviousQuestion} disabled={currentStep === 1}>
           Previous
