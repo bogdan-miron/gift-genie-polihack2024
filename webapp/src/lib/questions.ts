@@ -30,6 +30,18 @@ export const questions: Question[] = [
     ],
   },
   {
+    id:'budget',
+    type:"text",
+    question: "What is your desired budget range (USD)?",
+    multiSelect: false,
+    choices: [
+      { id: "0-50", title: "0-50" },
+      { id: "50-100", title: "50-100" },
+      { id: "100-200", title: "100-200" },
+      { id: "200+", title: "200+" }
+    ]   
+},
+  {
     id: 'relationship',
     type: 'text',
     question: 'What is your relationship with them?',
@@ -69,34 +81,29 @@ export const questions: Question[] = [
       {
         id: 'birthday',
         title: 'Birthday',
-        image: '/Christmas WebP Resize.jpg',
+        image: '/Christmas WebP Resize.jpg', // Replace with an appropriate image path
       },
       {
         id: 'christmas',
         title: 'Christmas',
-        image: '/Christmas WebP Resize.jpg',
-      },
-      // Add more occasion choices here
-    ],
-  },
-  {
-    id: 'style',
-    type: 'image',
-    question: 'What style do they prefer?',
-    multiSelect: true,
-    choices: [
-      {
-        id: 'modern',
-        title: 'Modern',
-        image: '/Christmas WebP Resize.jpg',
+        image: '/Christmas WebP Resize.jpg', // Replace with an appropriate image path
       },
       {
-        id: 'classic',
-        title: 'Classic',
-        image: '/Christmas WebP Resize.jpg',
+        id: 'anniversary',
+        title: 'Anniversary',
+        image: '/Christmas WebP Resize.jpg', // Example additional choice
       },
-      // Add more style choices here
+      {
+        id: 'graduation',
+        title: 'Graduation',
+        image: '/Christmas WebP Resize.jpg', // Example additional choice
+      },
+      {
+        id: 'wedding',
+        title: 'Wedding',
+        image: '/Christmas WebP Resize.jpg', // Example additional choice
+      }
     ],
-  },
-  // Add more image-based questions here
+  }
+  
 ];

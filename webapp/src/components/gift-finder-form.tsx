@@ -6,14 +6,15 @@ import GiftGrid from './gift-grid';
 import { Button } from '@/components/ui/button';
 import { ProgressBar } from './progress-bar';
 import { useGiftFinderStore } from '@/lib/store';
-import { Question } from '@/lib/store';
 import TextGrid from './text-grid';
+import { generateNextQuestion } from '@/lib/ai-service';
 
-export function GiftFinderForm({ questions }: { questions: Question[] }) {
+export function GiftFinderForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const { answers, setAnswers } = useGiftFinderStore();
+  const { questions, setQuestions } = useGiftFinderStore();
 
   useEffect(() => {
     const step = parseInt(searchParams.get('step') || '1', 10);
@@ -28,12 +29,20 @@ export function GiftFinderForm({ questions }: { questions: Question[] }) {
     setAnswers(newAnswers);
   };
 
-  const goToNextQuestion = () => {
-    if (currentStep < questions.length) {
+  const goToNextQuestion = async () => {
+
+    if(currentStep == 9){
+      //ADAUG LOGICA FINALA
+       router.push('/results');
+       return;
+    }
+    if (currentStep < 6) {
       router.push(`?step=${currentStep + 1}`);
     } else {
-      router.push('/results');
+        await generateNextQuestion(questions,setQuestions)
+     
     }
+
   };
 
   const goToPreviousQuestion = () => {
