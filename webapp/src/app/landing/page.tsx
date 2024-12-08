@@ -5,6 +5,13 @@ import Link from 'next/link';
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -69,20 +76,51 @@ export default function LandingPage() {
                 </p>
               </div>
               <div className='w-full max-w-2xl space-y-4 text-center mx-auto'>
-                <button
-                  onClick={() => router.push('/find-gift')}
-                  className='relative w-2/3 sm:w-1/2 md:w-1/3 h-[200px] mx-auto group cursor-pointer hover:scale-110 transition-transform duration-300  '
-                >
-                  <div className='relative h-full w-full transition-all duration-500 group'>
-                    <Image
-                      id='floatingImage'
-                      src='/genie.png'
-                      alt='Gift Genie'
-                      className='object-cover transition-opacity duration-500'
-                      fill
-                    />
-                  </div>
-                </button>
+                <div className='hover:scale-110 transition-transform duration-300'>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <motion.button
+                          //@ts-expect-error something wrong with the types
+                          onClick={() => router.push('/find-gift')}
+                          className='relative w-2/3 sm:w-1/2 md:w-1/3 h-[200px] mx-auto cursor-pointer'
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          animate={{
+                            y: [0, -10, 0],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            repeatType: 'reverse',
+                          }}
+                        >
+                          <motion.div
+                            //@ts-expect-error something wrong with the types
+                            className='relative h-full w-full'
+                            animate={{ rotate: [0, 5, -5, 0] }}
+                            transition={{
+                              duration: 4,
+                              repeat: Infinity,
+                              repeatType: 'reverse',
+                            }}
+                          >
+                            <Image
+                              id='floatingImage'
+                              src='/genie.png'
+                              alt='Gift Genie'
+                              className='object-cover'
+                              fill
+                            />
+                          </motion.div>
+                        </motion.button>
+                      </TooltipTrigger>
+                      <TooltipContent side='right'>
+                        <p>Click to start finding the perfect gift!</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 <div>
                   <p className='mx-auto max-w-[700px] text-gray-500'>
                     Ready to Find the Perfect Gift?
@@ -98,7 +136,7 @@ export default function LandingPage() {
         </section>
         <section
           id='how-it-works'
-          className='w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-primary-50 via-primary-100 to-primary-100'
+          className='w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-primary-50 via-primary-100 to-primary-100 flex flex-col items-center justify-center'
         >
           <div className='container px-4 md:px-6'>
             <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8'>
@@ -161,7 +199,7 @@ export default function LandingPage() {
         </section>
         <section
           id='why-choose-us'
-          className='w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-primary-100 via-transparent to-white'
+          className='w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-primary-100 via-transparent to-white flex flex-col items-center justify-center'
         >
           <div className='container px-4 md:px-6'>
             <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8'>
