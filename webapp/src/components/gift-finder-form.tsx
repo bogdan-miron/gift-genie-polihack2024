@@ -62,31 +62,39 @@ export function GiftFinderForm() {
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card 
+      className="w-full max-w-4xl mx-auto p-6 rounded-lg shadow-lg"
+      style={{
+        boxShadow: '0px 8px 20px rgba(128, 90, 213, 0.3)', // Purple shadow
+        background: 'white', // Background color
+      }}
+    >
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">Gift Finder</CardTitle>
+        
       </CardHeader>
       <CardContent>
-        <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
         <div className="mt-6">
+
+        <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
+
           {currentQuestion.type === 'image' ? (
             <GiftGrid
+            question={currentQuestion.question}
+            choices={currentQuestion.choices}
+            onSelectionChange={handleSelectionChange}
+            multiSelect={currentQuestion.multiSelect}
+            initialSelection={answers[currentQuestion.id] || []}
+            />
+            ) : (
+              <TextGrid
               question={currentQuestion.question}
               choices={currentQuestion.choices}
               onSelectionChange={handleSelectionChange}
               multiSelect={currentQuestion.multiSelect}
               initialSelection={answers[currentQuestion.id] || []}
-            />
-          ) : (
-            <TextGrid
-              question={currentQuestion.question}
-              choices={currentQuestion.choices}
-              onSelectionChange={handleSelectionChange}
-              multiSelect={currentQuestion.multiSelect}
-              initialSelection={answers[currentQuestion.id] || []}
-            />
-          )}
-        </div>
+              />
+              )}
+                      </div>
       </CardContent>
       <CardFooter className="flex justify-between mt-8">
         <Button 
@@ -106,4 +114,3 @@ export function GiftFinderForm() {
     </Card>
   );
 }
-
