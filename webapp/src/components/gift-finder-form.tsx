@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
 import { useGiftFinderStore } from '@/lib/store';
 import { generateNextQuestion } from '@/lib/ai-service';
 import GiftGrid from './gift-grid';
@@ -63,8 +68,8 @@ export function GiftFinderForm() {
   }
 
   return (
-    <Card 
-      className="w-full max-w-4xl mx-auto p-6 rounded-lg shadow-lg"
+    <Card
+      className='w-full max-w-4xl mx-auto p-6 rounded-lg shadow-lg'
       style={{
         boxShadow: '0px 8px 20px rgba(128, 90, 213, 0.3)',
         background: 'white',
@@ -74,14 +79,15 @@ export function GiftFinderForm() {
         <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
       </CardHeader>
       <CardContent>
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode='wait'>
           <motion.div
             key={currentStep}
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 50 }}
+            exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.5 }}
-            className="mt-6"
+            //@ts-expect-error type error
+            className='mt-6'
           >
             {currentQuestion.type === 'image' ? (
               <GiftGrid
@@ -103,11 +109,11 @@ export function GiftFinderForm() {
           </motion.div>
         </AnimatePresence>
       </CardContent>
-      <CardFooter className="flex justify-between mt-8">
-        <Button 
-          onClick={goToPreviousQuestion} 
+      <CardFooter className='flex justify-between mt-8'>
+        <Button
+          onClick={goToPreviousQuestion}
           disabled={currentStep === 1}
-          variant="outline"
+          variant='outline'
         >
           Previous
         </Button>
@@ -115,10 +121,13 @@ export function GiftFinderForm() {
           onClick={goToNextQuestion}
           disabled={isGenerating || !answers[currentQuestion.id]?.length}
         >
-          {isGenerating ? 'Generating...' : currentStep === questions.length ? 'Finish' : 'Next'}
+          {isGenerating
+            ? 'Generating...'
+            : currentStep === questions.length
+            ? 'Finish'
+            : 'Next'}
         </Button>
       </CardFooter>
     </Card>
   );
 }
-

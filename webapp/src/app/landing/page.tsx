@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import WhyChooseUs from '@/components/ui/WhyChooseUs';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -70,9 +71,8 @@ export default function LandingPage() {
                 <h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none'>
                   Welcome to Gift Genie
                 </h1>
-                <p className='mx-auto max-w-[700px] text-gray-500'>
-                  Your personal gift-giving assistant. Find the perfect present
-                  for any occasion.
+                <p className='mx-auto max-w-[700px]  text-2xl leading-relaxed font-semibold'>
+                  Ready to Find the Perfect Gift?
                 </p>
               </div>
               <div className='w-full max-w-2xl space-y-4 text-center mx-auto'>
@@ -122,12 +122,9 @@ export default function LandingPage() {
                   </TooltipProvider>
                 </div>
                 <div>
-                  <p className='mx-auto max-w-[700px] text-gray-500'>
-                    Ready to Find the Perfect Gift?
-                  </p>
-                  <p className='mx-auto max-w-[700px] text-gray-500'>
-                    Start your gift-finding journey today and make your loved
-                    ones smile.
+                  <p className='mx-auto max-w-[700px] text-gray-500 text-2xl leading-relaxed'>
+                    Your personal gift-giving assistant. Start your gift-finding
+                    journey today and make your loved ones smile.
                   </p>
                 </div>
               </div>
@@ -202,9 +199,7 @@ export default function LandingPage() {
           className='w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-primary-100 via-transparent to-white flex flex-col items-center justify-center'
         >
           <div className='container px-4 md:px-6'>
-            <h2 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8'>
-              Why Choose Gift Genie?
-            </h2>
+            <WhyChooseUs />
             <div className='grid gap-10 sm:grid-cols-2 md:grid-cols-3'>
               {/* Additional icons and benefits */}
             </div>
@@ -212,7 +207,7 @@ export default function LandingPage() {
         </section>
         <footer className='flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t from-white via-primary-50 to-primary-100'>
           <p className='text-xs text-gray-500'>
-            © 2023 Gift Genie. All rights reserved.
+            © 2024 Gift Genie. All rights reserved.
           </p>
           <nav className='sm:ml-auto flex gap-4 sm:gap-6'>
             <Link
