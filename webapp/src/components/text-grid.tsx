@@ -23,13 +23,22 @@ export default function TextGrid({
     useState<string[]>(initialSelection);
 
   const handleSelection = (id: string) => {
-    let newSelection: string[];
+    // First, filter out any selections that aren't in the current choices
+    const validChoices = selectedChoices.filter((choiceId) =>
+      choices.some((choice) => choice.id === choiceId)
+    );
 
+    let newSelection: string[];
     if (multiSelect) {
-      newSelection = selectedChoices.includes(id)
-        ? selectedChoices.filter((item) => item !== id)
-        : [...selectedChoices, id];
+      if (validChoices.includes(id)) {
+        // If already selected, remove it
+        newSelection = validChoices.filter((item) => item !== id);
+      } else {
+        // If not selected, add it to existing valid selections
+        newSelection = [...validChoices, id];
+      }
     } else {
+      // For single select, just use the new id
       newSelection = [id];
     }
 

@@ -15,6 +15,7 @@ export function GiftFinderForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const { answers, setAnswers, questions, setQuestions } = useGiftFinderStore();
   const [isGenerating, setIsGenerating] = useState(false);
+  let selected: string[] = [];
 
   useEffect(() => {
     const step = parseInt(searchParams.get('step') || '1', 10);
@@ -22,9 +23,14 @@ export function GiftFinderForm() {
   }, [searchParams]);
 
   const handleSelectionChange = (selectedChoices: string[]) => {
+    const currentQuestion = questions[currentStep - 1];
+    console.log('currentQuestion', currentQuestion);
+    console.log('selectedChoices', selectedChoices);
+    selected = selectedChoices;
     const newAnswers = {
       ...answers,
-      [questions[currentStep - 1].id]: selectedChoices,
+      // Simply store the selectedChoices array directly
+      [currentQuestion.id]: selected,
     };
     setAnswers(newAnswers);
   };
@@ -69,7 +75,7 @@ export function GiftFinderForm() {
           choices={currentQuestion.choices}
           onSelectionChange={handleSelectionChange}
           multiSelect={currentQuestion.multiSelect}
-          initialSelection={answers[currentQuestion.id] || []}
+          initialSelection={[]}
         />
       ) : (
         <TextGrid
@@ -77,7 +83,7 @@ export function GiftFinderForm() {
           choices={currentQuestion.choices}
           onSelectionChange={handleSelectionChange}
           multiSelect={currentQuestion.multiSelect}
-          initialSelection={answers[currentQuestion.id] || []}
+          initialSelection={[]}
         />
       )}
       <div className='flex justify-between mt-8'>

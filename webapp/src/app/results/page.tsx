@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useGiftFinderStore } from '@/lib/store';
 import { useEffect, useState } from 'react';
 import { generateGiftSuggestions } from '@/lib/ai-service';
-import { questions } from '@/lib/questions';
 
 export default function ResultsPage() {
   const { answers, clearAnswers, aiSuggestions, setAiSuggestions } =
@@ -23,9 +22,18 @@ export default function ResultsPage() {
 
   const generateSuggestions = async () => {
     setIsLoading(true);
-    const suggestions = await generateGiftSuggestions(answers, questions);
-    setAiSuggestions(suggestions);
-    setIsLoading(false);
+
+    // Get questions from the store instead of importing them
+    const { questions } = useGiftFinderStore.getState();
+
+    try {
+      const suggestions = await generateGiftSuggestions(answers, questions);
+      setAiSuggestions(suggestions);
+    } catch (error) {
+      console.error('Failed to generate suggestions:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const startOver = () => {

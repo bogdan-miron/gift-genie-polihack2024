@@ -62,7 +62,7 @@
 //     let selection: string[] = [];
 
 //     const recordSelection = async () => {
-        
+
 //         if(currentQuestion == 9){
 //             await narrowWithAI();
 //             return;
@@ -82,7 +82,7 @@
 
 //         if (currentQuestion >= 4 && currentQuestion <= 8) { //AI question
 //                 await generateNextQuestion();
-//         } 
+//         }
 
 //         setCurrentQuestion(currentQuestion + 1);
 //     };
@@ -92,7 +92,7 @@
 //     };
 
 //     const narrowWithAI = async () => {
-//         let prompt = `I have to buy a present for the following person: 
+//         let prompt = `I have to buy a present for the following person:
 //             ${startingAnswers.map((ans) => ans.question + " " + ans.answer + ",")}. `;
 
 //         if (aiResponses) {
@@ -113,7 +113,7 @@
 //         let prompt = `I have to buy a present for the following person with these characteristics
 //             ${startingAnswers.map((ans) => ans.question + " " + ans.answer + ",")}.
 //              Please provide a question to narrow down the search space of gifts that would be
-//               suitable for this person, without repeating any of the characteristics and areas of interest for that person, or any category already found in the list. 
+//               suitable for this person, without repeating any of the characteristics and areas of interest for that person, or any category already found in the list.
 //             Please also generate only maximum 6 comma-separated non-repeating subcategories of the specified
 //              categories for possible answers, without anymore output.It cannot be a specific object,
 //               it can only be a category listed on wikipedia`;
@@ -137,7 +137,7 @@
 
 //         // setStartingAnswers((prev) => [...prev, entry]);
 //         // console.log("ALL:",startingAnswers);
-        
+
 //     }
 
 //     return (
