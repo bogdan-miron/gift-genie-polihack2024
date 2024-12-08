@@ -76,7 +76,7 @@ export function GiftFinderForm() {
       }}
     >
       <CardHeader>
-        <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
+        <ProgressBar currentStep={currentStep} totalSteps={10} />
       </CardHeader>
       <CardContent>
         <AnimatePresence mode='wait'>
@@ -123,7 +123,7 @@ export function GiftFinderForm() {
         >
           {isGenerating
             ? 'Generating...'
-            : currentStep === questions.length
+            : currentStep === 10
             ? 'Finish'
             : 'Next'}
         </Button>
