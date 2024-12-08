@@ -81,7 +81,7 @@ export const questions: Question[] = [
       {
         id: 'birthday',
         title: 'Birthday',
-        image: '/Christmas WebP Resize.jpg', // Replace with an appropriate image path
+        image: '/Birthday webp.webp', // Replace with an appropriate image path
       },
       {
         id: 'christmas',
@@ -91,17 +91,17 @@ export const questions: Question[] = [
       {
         id: 'anniversary',
         title: 'Anniversary',
-        image: '/Christmas WebP Resize.jpg', // Example additional choice
+        image: '/Aniversary webp.webp', // Example additional choice
       },
       {
         id: 'graduation',
         title: 'Graduation',
-        image: '/Christmas WebP Resize.jpg', // Example additional choice
+        image: '/Graduation webp.webp', // Example additional choice
       },
       {
         id: 'wedding',
         title: 'Wedding',
-        image: '/Christmas WebP Resize.jpg', // Example additional choice
+        image: '/Wedding webp.webp', // Example additional choice
       }
     ],
   }

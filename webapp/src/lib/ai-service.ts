@@ -58,7 +58,7 @@ export async function generateNextQuestion(
 
     const responseText = response.trim();
     const arr = responseText.split(',');
-    const questionText = arr[0];
+    const questionText = arr[0] + "?";
     const options = arr.slice(1).map((opt) => opt.trim());
 
     console.log('Options:', options);
