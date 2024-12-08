@@ -55,7 +55,7 @@ export default function LandingPage() {
       <main className='flex-1 pt-14'>
         <section
           id='home'
-          className='w-full py-12 md:py-16 lg:py-26 xl:py-42 bg-gradient-to-b from-white via-transparent to-primary-50'
+          className='w-full py-12 md:py-16 lg:py-26 xl:py-42 bg-gradient-to-b from-white via-transparent to-primary-50 flex flex-col items-center justify-center'
         >
           <div className='container px-4 md:px-6'>
             <div className='flex flex-col items-center space-y-4 text-center'>

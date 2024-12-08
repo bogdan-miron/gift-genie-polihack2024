@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useGiftFinderStore } from '@/lib/store';
 import { useEffect, useState } from 'react';
 import { generateGiftSuggestions } from '@/lib/ai-service';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Gift, RefreshCw, ArrowLeft } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function ResultsPage() {
   const { answers, clearAnswers, aiSuggestions, setAiSuggestions } =
@@ -47,52 +51,88 @@ export default function ResultsPage() {
   }
 
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <div className='max-w-4xl mx-auto'>
-        <h1 className='text-3xl font-bold text-center mb-8'>
+    <div className='container mx-auto px-4 py-12'>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        // @ts-expect-error - framer-motion types
+        className='max-w-4xl mx-auto'
+      >
+        <h1 className='text-4xl font-bold text-center mb-8 text-primary'>
           Your Gift Recommendations
         </h1>
 
         {isLoading ? (
-          <div className='text-center'>Generating recommendations...</div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Generating recommendations...</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className='space-y-2'>
+                <Skeleton className='h-4 w-full' />
+                <Skeleton className='h-4 w-full' />
+                <Skeleton className='h-4 w-3/4' />
+              </div>
+            </CardContent>
+          </Card>
         ) : (
           <>
             {aiSuggestions && (
-              <div className='bg-muted p-4 rounded-lg mb-8'>
-                <h2 className='text-xl font-semibold mb-4'>
-                  Recommended Categories:
-                </h2>
-                <p className='whitespace-pre-wrap'>{aiSuggestions}</p>
-              </div>
+              <Card className='mb-8'>
+                <CardHeader>
+                  <CardTitle className='flex items-center'>
+                    <Gift className='mr-2' />
+                    Recommended Categories
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className='whitespace-pre-wrap text-muted-foreground'>
+                    {aiSuggestions}
+                  </p>
+                </CardContent>
+              </Card>
             )}
 
-            <div className='bg-muted p-4 rounded-lg mb-8'>
-              <h2 className='text-xl font-semibold mb-4'>
-                Based on your choices:
-              </h2>
-              <pre className='whitespace-pre-wrap'>
-                {JSON.stringify(answers, null, 2)}
-              </pre>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+              {aiSuggestions?.split(',').map((item, index) => (
+                <motion.div
+                  key={item}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card className='h-full hover:shadow-lg transition-shadow duration-300'>
+                    <CardHeader>
+                      <CardTitle className='text-lg'>{item.trim()}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className='text-sm text-muted-foreground'>
+                        Click to see more details about this gift suggestion
+                      </p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
-
-            {/* Gift recommendations grid */}
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-              {/* Add your gift recommendation logic here based on answers */}
-              <div className='p-4 border rounded-lg'>
-                <h3 className='font-semibold'>Sample Gift Recommendation</h3>
-                <p>
-                  This is where you would show gift recommendations based on the
-                  user&apos;s answers.
-                </p>
-              </div>
-            </div>
-
-            <div className='mt-8 text-center'>
-              <Button onClick={startOver}>Start Over</Button>
+            <div className='mt-12 flex justify-center space-x-4'>
+              <Button
+                onClick={startOver}
+                variant='outline'
+                className='flex items-center'
+              >
+                <ArrowLeft className='mr-2 h-4 w-4' /> Start Over
+              </Button>
+              <Button
+                onClick={generateSuggestions}
+                className='flex items-center'
+              >
+                <RefreshCw className='mr-2 h-4 w-4' /> Regenerate Suggestions
+              </Button>
             </div>
           </>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
