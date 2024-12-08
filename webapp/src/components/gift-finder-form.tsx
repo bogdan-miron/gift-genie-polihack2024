@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { useGiftFinderStore } from '@/lib/store';
 import { generateNextQuestion } from '@/lib/ai-service';
 import GiftGrid from './gift-grid';
@@ -65,36 +66,42 @@ export function GiftFinderForm() {
     <Card 
       className="w-full max-w-4xl mx-auto p-6 rounded-lg shadow-lg"
       style={{
-        boxShadow: '0px 8px 20px rgba(128, 90, 213, 0.3)', // Purple shadow
-        background: 'white', // Background color
+        boxShadow: '0px 8px 20px rgba(128, 90, 213, 0.3)',
+        background: 'white',
       }}
     >
       <CardHeader>
-        
+        <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
       </CardHeader>
       <CardContent>
-        <div className="mt-6">
-
-        <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
-
-          {currentQuestion.type === 'image' ? (
-            <GiftGrid
-            question={currentQuestion.question}
-            choices={currentQuestion.choices}
-            onSelectionChange={handleSelectionChange}
-            multiSelect={currentQuestion.multiSelect}
-            initialSelection={answers[currentQuestion.id] || []}
-            />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStep}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            transition={{ duration: 0.5 }}
+            className="mt-6"
+          >
+            {currentQuestion.type === 'image' ? (
+              <GiftGrid
+                question={currentQuestion.question}
+                choices={currentQuestion.choices}
+                onSelectionChange={handleSelectionChange}
+                multiSelect={currentQuestion.multiSelect}
+                initialSelection={answers[currentQuestion.id] || []}
+              />
             ) : (
               <TextGrid
-              question={currentQuestion.question}
-              choices={currentQuestion.choices}
-              onSelectionChange={handleSelectionChange}
-              multiSelect={currentQuestion.multiSelect}
-              initialSelection={answers[currentQuestion.id] || []}
+                question={currentQuestion.question}
+                choices={currentQuestion.choices}
+                onSelectionChange={handleSelectionChange}
+                multiSelect={currentQuestion.multiSelect}
+                initialSelection={answers[currentQuestion.id] || []}
               />
-              )}
-                      </div>
+            )}
+          </motion.div>
+        </AnimatePresence>
       </CardContent>
       <CardFooter className="flex justify-between mt-8">
         <Button 
@@ -114,3 +121,4 @@ export function GiftFinderForm() {
     </Card>
   );
 }
+
