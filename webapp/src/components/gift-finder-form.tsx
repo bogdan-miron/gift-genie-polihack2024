@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import GiftGrid from './gift-grid';
-import TextGrid from './text-grid';
 import { Button } from '@/components/ui/button';
-import { ProgressBar } from './progress-bar';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGiftFinderStore } from '@/lib/store';
 import { generateNextQuestion } from '@/lib/ai-service';
+import GiftGrid from './gift-grid';
+import TextGrid from './text-grid';
+import { ProgressBar } from './progress-bar';
 
 export function GiftFinderForm() {
   const router = useRouter();
@@ -15,7 +16,6 @@ export function GiftFinderForm() {
   const [currentStep, setCurrentStep] = useState(1);
   const { answers, setAnswers, questions, setQuestions } = useGiftFinderStore();
   const [isGenerating, setIsGenerating] = useState(false);
-  let selected: string[] = [];
 
   useEffect(() => {
     const step = parseInt(searchParams.get('step') || '1', 10);
@@ -24,15 +24,10 @@ export function GiftFinderForm() {
 
   const handleSelectionChange = (selectedChoices: string[]) => {
     const currentQuestion = questions[currentStep - 1];
-    console.log('currentQuestion', currentQuestion);
-    console.log('selectedChoices', selectedChoices);
-    selected = selectedChoices;
-    const newAnswers = {
+    setAnswers({
       ...answers,
-      // Simply store the selectedChoices array directly
-      [currentQuestion.id]: selected,
-    };
-    setAnswers(newAnswers);
+      [currentQuestion.id]: selectedChoices,
+    });
   };
 
   const goToNextQuestion = async () => {
@@ -67,36 +62,48 @@ export function GiftFinderForm() {
   }
 
   return (
-    <div className='container mx-auto px-4 py-8'>
-      <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
-      {currentQuestion.type === 'image' ? (
-        <GiftGrid
-          question={currentQuestion.question}
-          choices={currentQuestion.choices}
-          onSelectionChange={handleSelectionChange}
-          multiSelect={currentQuestion.multiSelect}
-          initialSelection={[]}
-        />
-      ) : (
-        <TextGrid
-          question={currentQuestion.question}
-          choices={currentQuestion.choices}
-          onSelectionChange={handleSelectionChange}
-          multiSelect={currentQuestion.multiSelect}
-          initialSelection={[]}
-        />
-      )}
-      <div className='flex justify-between mt-8'>
-        <Button onClick={goToPreviousQuestion} disabled={currentStep === 1}>
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold text-center">Gift Finder</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ProgressBar currentStep={currentStep} totalSteps={questions.length} />
+        <div className="mt-6">
+          {currentQuestion.type === 'image' ? (
+            <GiftGrid
+              question={currentQuestion.question}
+              choices={currentQuestion.choices}
+              onSelectionChange={handleSelectionChange}
+              multiSelect={currentQuestion.multiSelect}
+              initialSelection={answers[currentQuestion.id] || []}
+            />
+          ) : (
+            <TextGrid
+              question={currentQuestion.question}
+              choices={currentQuestion.choices}
+              onSelectionChange={handleSelectionChange}
+              multiSelect={currentQuestion.multiSelect}
+              initialSelection={answers[currentQuestion.id] || []}
+            />
+          )}
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-between mt-8">
+        <Button 
+          onClick={goToPreviousQuestion} 
+          disabled={currentStep === 1}
+          variant="outline"
+        >
           Previous
         </Button>
         <Button
           onClick={goToNextQuestion}
           disabled={isGenerating || !answers[currentQuestion.id]?.length}
         >
-          {isGenerating ? 'Generating...' : 'Next'}
+          {isGenerating ? 'Generating...' : currentStep === questions.length ? 'Finish' : 'Next'}
         </Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
+
