@@ -18,7 +18,7 @@ export async function generateGiftSuggestions(
             .filter(Boolean);
 
           return `${q.question} ${selectedTitles.join(', ')}.
-            from your previous suggestions. Please suggest 5 gifts for this person separated by commas.`;
+            from your previous suggestions. Please suggest 5 gifts for this person separated by commas. Generate only the specific object, no other words and no examples`;
         })}`;
   try {
     console.log('AI Prompt:', prompt);
@@ -58,7 +58,7 @@ export async function generateNextQuestion(
 
     const responseText = response.trim();
     const arr = responseText.split(',');
-    const questionText = arr[0] + "?";
+    const questionText = arr[0] + '?';
     const options = arr.slice(1).map((opt) => opt.trim());
 
     console.log('Options:', options);
