@@ -57,7 +57,7 @@ export default function TextGrid({
               'p-4 rounded-lg border-2 transition-all duration-300',
               'hover:border-primary-500',
               selectedChoices.includes(choice.id)
-                ? 'border-primary-500 bg-primary-50'
+                ? 'border-primary-500 bg-primary-50 shadow-lg shadow-primary-500/30'
                 : 'border-gray-200'
             )}
             onClick={() => handleSelection(choice.id)}
