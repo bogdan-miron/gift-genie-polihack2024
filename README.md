@@ -5,8 +5,8 @@ GiftGenie is a modern, responsive web application built with TypeScript and Tail
 ## Features
 
 - **Personalized Gift Recommendations**: Get gift ideas based on your responses to a series of thoughtfully generated questions.
-- **Responsive Design**: The app is designed to be fully responsive, offering a seamless experience across devices.
-- **Integration with Gemini API**: Questions are generated dynamically using Gemini API calls.
+- **Responsive Design**: The app is designed to be fully responsive on all devices.
+- **Integration with Gemini API**: Questions are generated using Gemini API calls.
 
 ## About the Project
 
